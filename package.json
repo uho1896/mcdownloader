@@ -1,0 +1,37 @@
+{
+  "name": "mcdownloader",
+  "version": "0.1.0",
+  "description": "Multi-connection, resumable, file download library for Nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uho1896/mcdownloader.git"
+  },
+  "keywords": [
+    "Node",
+    "Nodejs",
+    "file",
+    "download",
+    "resume",
+    "pause",
+    "resumable",
+    "pausable",
+    "multi",
+    "connection",
+    "downloader"
+  ],
+  "author": "uho189@outlook.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/uho1896/mcdownloader#readme/issues"
+  },
+  "homepage": "https://github.com/uho1896/mcdownloader#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "underscore": "1.5.x"
+  },
+  "devDependencies": {}
+}
