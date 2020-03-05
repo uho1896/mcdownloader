@@ -1,11 +1,10 @@
 const e = require('../Exceptions');
 
 class DataRequest {
-	constructor(writer, threads, metaBuilder, threadsDestroyer, progress, downloadStart = 0) {
+	constructor(writer, threads, metaBuilder, progress, downloadStart = 0) {
 		this.writer = writer;
 		this.threads = threads;
 		this.metaBuilder = metaBuilder;
-		this.threadsDestroyer = threadsDestroyer;
 		this.progress = progress;
 		this.downloadStart = downloadStart;
 	}

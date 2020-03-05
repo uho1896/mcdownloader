@@ -1,11 +1,12 @@
 const axios = require('../axios');
 
 class BodyRequest {
-	constructor(url, start, end, options = {}) {
+	constructor(url, start, end, cancelToken, options = {}) {
 		this.url = url;
 		this.method = options.method || "get";
 		this.startByte = start;
 		this.endByte = end;
+		this.cancelToken = cancelToken,
 		this.headers = Object.assign({}, options.headers || {}, {range: `bytes=${start}-${end}`});
 	}
 
@@ -18,6 +19,7 @@ class BodyRequest {
 			url: this.url,
 			method: this.method,
 			headers: this.headers,
+			cancelToken: this.cancelToken,
 			responseType: 'stream',
 		});
 	}

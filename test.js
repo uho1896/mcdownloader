@@ -8,8 +8,13 @@ const options = {
   onProgress: console.log,
 };
 const nd = new MCD(options);
-nd.exec().then(() => {
-  console.log('done successfully');
+nd.exec().then((msg) => {
+  console.log(msg || 'done successfully');
 }).catch(e => {
   console.log(e);
-})
+});
+
+setTimeout(() => {
+  nd.cancel();
+  console.log('cancelling');
+}, 5000);

@@ -1,7 +1,8 @@
+const axios = require('../axios');
 const DownloadWriter = require('./DownloadWriter');
 const BodyRequest = require('./BodyRequest');
 const MetaDataBuilder = require('./MetaDataBuilder');
-const ThreadsDestroyer = require('./ThreadsDestroyer');
+const RequestCanceller = require('./RequestCanceller');
 const Progress = require('./Progress');
 
 class ExecutorGenerator {
@@ -17,16 +18,20 @@ class ExecutorGenerator {
 	async exec() {
 		let executor = {};
 
-		executor.threadsDestroyer = new ThreadsDestroyer(this.threads);
 		executor.writer = new DownloadWriter(this.fd);
 		executor.metaBuilder = new MetaDataBuilder(this.threads,
 			this.downloadSize, this.downloadStart, this.url, this.options);
 		executor.progress = new Progress(this.threads, this.downloadSize, this.options);
 
+		let srcList = [];
 		this.threads.forEach(thd => {
-			thd.bodyRequest = new BodyRequest(this.url, thd.position, thd.end, this.options);
+			const src = axios.CancelToken.source();
+			srcList.push(src);
+			thd.bodyRequest = new BodyRequest(this.url, thd.position, thd.end, src.token, this.options);
 		});
 		executor.threads = this.threads;
+		executor.requestCanceller = new RequestCanceller(srcList);
+
 		return Promise.resolve(executor);
 	}
 }

@@ -22,6 +22,8 @@ const DownloadValidator = require('./core/DownloadValidator');
 class Redownload {
 	constructor(options) {
 		this.options = options;
+		this.canceled = false;
+		this.requestCanceller = null;
 	}
 
 	async exec() {
@@ -35,12 +37,17 @@ class Redownload {
 			const execGenerator = await new ExecutorGenerator(fileHandle, metaData.threads,
 				metaData.downloadSize, metaData.downloadStart, metaData.url, options).exec();
 
+			if (this.canceled) {
+				// cancel trap
+				return Promise.resolve('canceled');
+			}
+			this.requestCanceller = execGenerator.requestCanceller;
+
 			// start download
 			await new DataRequest(
 				execGenerator.writer,
 				execGenerator.threads,
 				execGenerator.metaBuilder,
-				execGenerator.threadsDestroyer,
 				execGenerator.progress,
 				metaData.downloadStart
 			).exec();
@@ -51,8 +58,17 @@ class Redownload {
 
 			return Promise.resolve();
 		} catch(e) {
-			return Promise.reject(e);
+			if (this.canceled) {
+				return Promise.resolve('canceled');
+			} else {
+				return Promise.reject(e);
+			}
 		}
+	}
+
+	cancel() {
+		this.canceled = true;
+		this.requestCanceller && this.requestCanceller.exec();
 	}
 }
 

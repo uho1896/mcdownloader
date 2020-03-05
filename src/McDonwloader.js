@@ -14,6 +14,8 @@ const defalutOptions = {
 class McDownloader {
 	constructor(options) {
 		this.options = Object.assign({}, defalutOptions, options);
+		this.canceled = false;
+		this.executor = null;
 	}
 
 	async exec() {
@@ -22,12 +24,17 @@ class McDownloader {
 		}
 
 		if (/redownload/i.test(this.options.downloadType) || /.*\.mcd$/.test(this.options.output)) {
-			const rd = new ReDownload(this.options);
-			return rd.exec();
+			this.executor = new ReDownload(this.options);
 		} else {
-			const nd = new NewDownload(this.options);
-			return nd.exec();
+			this.executor = new NewDownload(this.options);
 		}
+
+		return this.executor.exec();
+	}
+
+	cancel() {
+		this.canceled = true;
+		this.executor && this.executor.cancel();
 	}
 }
 

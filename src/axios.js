@@ -7,6 +7,8 @@ function errorRetry(error) {
   const originalRequest = error && error.config;
   if (!originalRequest) {
     return Promise.reject(error);
+  } else if (axios.isCancel(error)) {
+    return Promise.resolve('canceled');
   }
 
   const uri = originalRequest.url;
