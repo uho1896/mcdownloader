@@ -2,7 +2,7 @@ NOTE: This is an opinionated rework of the original [mt-files-downloader](https:
 
 This codebase enhances upon the original work with the following:
 
-##Features
+## Features
 1. **HTTP & HTTPS downloads work:** Working download for both protocols.  Refer to code examples below.
 
 2. **Properly Downloads Redirecting URLs:** Sometimes URLs will redirect to another URL, for N times.  This library will follow redirects until it finds the source.
@@ -14,10 +14,10 @@ This codebase enhances upon the original work with the following:
 5. **Stop and start from the last downloaded byte:**. You don't have to worry about internet getting disconnected or your computer shutting down while downloading. You can quite easily start from the last byte that was downloaded.
 
 
-##.mcd file
+## .mcd file
 Once the download starts the library will create a file with a **.mcd** extension. This file contains some meta information related to the download and is a little bigger *(around 10kb)* than the original download size. The **.mcd** file can be used later to restart downloads from where the last byte that was downloaded. After the download is completed the downloader will truncate the file to remove that meta data.
 
-##New-Downloads
+## New-Downloads
 When you want to start a new download you just need to provide a download url and a download path and call the ```start()``` method.
 
 ```javascript
@@ -38,7 +38,7 @@ nd.exec().then(() => {
 });
 ```
 
-##Re-Downloads
+## Re-Downloads
 If you want to restart a download from where it left off. You just need to provide the path of the **.mcd** file.
 
 ```javascript
@@ -55,7 +55,7 @@ nd.exec().then(() => {
 });
 ```
 
-##Download Options
+## Download Options
 A set of custom options can be sent to control the way a download is performed.
 
 ```javascript
